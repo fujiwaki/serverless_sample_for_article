@@ -1,0 +1,9 @@
+{
+  "id": "additional_tools",
+  "version": "0.1.0",
+  "name": "additional_tools",
+  "installsAfter": [
+    "ghcr.io/devcontainers/features/common-utils",
+    "ghcr.io/devcontainers/features/node"
+  ]
+}

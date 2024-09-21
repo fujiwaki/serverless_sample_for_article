@@ -1,0 +1,110 @@
+[project]
+name = "serverless_sample"
+version = "0.1.0"
+description = "Sample project for serverless"
+dependencies = [
+    "aws-lambda-powertools",
+    "boto3",
+    "pydantic",
+    "pydantic-extra-types",
+    "python-ulid",
+]
+readme = "README.md"
+requires-python = ">= 3.8"
+
+[tool.uv]
+dev-dependencies = [
+    "ruff",
+    "mypy",
+    "pytest",
+    "pytest-cov",
+    "pytest-env",
+    "pytest-xdist",
+    "pre-commit",
+
+    # docmentation
+    "mkdocs",
+    "mkdocs-coverage",
+    "mkdocs-gen-files",
+    "mkdocs-literate-nav",
+    "mkdocs-material",
+    "mkdocs-section-index",
+    "mkdocs-swagger-ui-tag",
+    "mkdocstrings[python]",
+
+    # AWS
+    "aws-cdk-lib",
+    "aws-cdk-aws-lambda-python-alpha",
+    "constructs",
+    "boto3-stubs[essential]",
+    "moto[all]",
+
+    "jupyter",
+]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "ANN002", # missing-type-args
+    "ANN003", # missing-type-kwargs
+    "ANN101", # missing-type-self
+    "ANN102", # missing-type-cls
+
+    # for formatter
+    "W191",
+    "E111",
+    "E114",
+    "E117",
+    "D206",
+    "D300",
+    "Q000",
+    "Q001",
+    "Q002",
+    "Q003",
+    "COM812",
+    "COM819",
+    "ISC001",
+    "ISC002",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+    "S101",   # assert
+    "S105",   # hardcoded-password-string
+    "SLF001", # private-member-access
+]
+"tests/**/__init__.py" = [
+    "D104", # missing-docstring
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.mypy]
+mypy_path = ["src", "aws"]
+strict = true
+plugins = ["pydantic.mypy"]
+enable_incomplete_feature = "NewGenericSyntax"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = [
+    "-ra",
+    "-vv",
+    "--cov=src",
+    "--cov-report=html:docs/htmlcov",
+    "-n",
+    "auto",
+]
+
+[tool.coverage.report]
+exclude_also = ["if TYPE_CHECKING:", "raise NotImplementedError"]
+
+[tool.pytest_env]
+SERVICE_NAME = "test"
+TABLE_NAME = "test_table"
+AWS_DEFAULT_REGION = "us-east-1"
